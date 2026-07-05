@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0f0d" />
+  <meta name="description" content="Precise sous vide time/temp and post-sear countdown calculator." />
+  <title>sousvide// timing calculator</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span class="prompt">$</span> sousvide<span class="cursor">_</span>timing
+  </header>
+
+  <main id="app">
+
+    <!-- SETUP VIEW -->
+    <section id="setupView" class="view">
+      <form id="setupForm" onsubmit="return false">
+
+        <fieldset>
+          <legend>01_ cut</legend>
+          <label>meat category
+            <select id="meatCategory"></select>
+          </label>
+          <label>shape
+            <select id="shape"></select>
+          </label>
+          <label>thickness (mm)
+            <input id="thickness" type="number" inputmode="decimal" min="1" step="1" value="38" />
+          </label>
+          <label>starting temp
+            <select id="initialTemp"></select>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>02_ doneness &amp; safety</legend>
+          <label>target doneness
+            <select id="doneness"></select>
+          </label>
+          <label class="checkbox-row">
+            <input id="pasteurize" type="checkbox" />
+            pasteurization hold
+          </label>
+          <p class="hint" id="pasteurizeNote"></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>03_ sear</legend>
+          <label>pan material
+            <select id="panMaterial"></select>
+          </label>
+          <label>heat level
+            <select id="heatLevel"></select>
+          </label>
+          <label>max gray-band depth (mm)
+            <input id="grayDepth" type="number" inputmode="decimal" min="0.5" step="0.5" value="2" />
+          </label>
+          <label>gray threshold (°F)
+            <input id="grayThreshold" type="number" inputmode="decimal" min="130" step="1" value="158" />
+          </label>
+        </fieldset>
+
+        <button id="calculateBtn" class="btn-primary" type="button">&gt; calculate</button>
+      </form>
+    </section>
+
+    <!-- RESULTS VIEW -->
+    <section id="resultsView" class="view hidden">
+      <h2 class="section-title">sous_vide/</h2>
+      <div class="result-row"><span>water bath temp</span><span id="resBathTemp"></span></div>
+      <div class="result-row"><span>come-up time</span><span id="resSousVideTime"></span></div>
+      <div class="result-row" id="resPasteurizeRow"><span>+ pasteurization hold</span><span id="resPasteurizeTime"></span></div>
+      <div class="result-row result-row--total"><span>total bath time</span><span id="resTotalSousVideTime"></span></div>
+
+      <h2 class="section-title">sear/</h2>
+      <div class="result-row"><span>contact surface temp</span><span id="resContactTemp"></span></div>
+      <div class="result-row"><span>max safe contact</span><span id="resMaxSafe"></span></div>
+      <div class="result-row"><span>flip plan</span><span id="resFlipPlan"></span></div>
+      <div class="result-row result-row--total"><span>total sear time</span><span id="resTotalSearTime"></span></div>
+      <p class="hint hint--warning" id="resWarning"></p>
+
+      <div class="btn-row">
+        <button id="startSousVide" class="btn-primary" type="button">&gt; start bath timer</button>
+        <button id="startSear" class="btn-primary" type="button">&gt; start sear timer</button>
+      </div>
+      <button id="backToSetup" class="btn-secondary" type="button">&lt; back</button>
+    </section>
+
+    <!-- TIMER VIEW -->
+    <section id="timerView" class="view hidden">
+      <div class="timer-phase" id="timerPhaseLabel">PHASE</div>
+      <div class="timer-side" id="timerSideLabel">—</div>
+      <div class="timer-display" id="timerDisplay">0:00</div>
+      <div class="timer-progress-track"><div class="timer-progress" id="timerProgress"></div></div>
+      <button id="timerBack" class="btn-secondary" type="button">&lt; back</button>
+    </section>
+
+  </main>
+
+  <footer class="footnote">
+    physics-based estimate · verify core temp with a thermometer · not a substitute for USDA/FSIS food-safety guidance
+  </footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
