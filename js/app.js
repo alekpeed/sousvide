@@ -265,9 +265,34 @@ function startSearTimer() {
   }, 100);
 }
 
+/* ---------- theme ---------- */
+
+const THEME_COLORS = { terminal: '#060a08', neon: '#060215', garden: '#05070c', pinstripe: '#0a1630' };
+const THEME_KEY = 'sousvide-theme';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', THEME_COLORS[theme] || THEME_COLORS.terminal);
+  document.querySelectorAll('.theme-dot').forEach((dot) => {
+    dot.setAttribute('data-active', String(dot.dataset.themeChoice === theme));
+  });
+  try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+}
+
+function initTheme() {
+  let saved = 'terminal';
+  try { saved = localStorage.getItem(THEME_KEY) || 'terminal'; } catch (e) {}
+  applyTheme(saved);
+  document.querySelectorAll('.theme-dot').forEach((dot) => {
+    dot.addEventListener('click', () => applyTheme(dot.dataset.themeChoice));
+  });
+}
+
 /* ---------- wiring ---------- */
 
 function init() {
+  initTheme();
   populateForm();
   $('meatCategory').addEventListener('change', updateDonenessOptions);
   $('panMaterial').addEventListener('change', updateHeatLevelOptions);

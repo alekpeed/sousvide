@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="terminal">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
@@ -13,7 +13,13 @@
 </head>
 <body>
   <header class="topbar">
-    <span class="prompt">$</span> sousvide<span class="cursor">_</span>timing
+    <span class="topbar-title"><span class="prompt">$</span> sousvide<span class="cursor">_</span>timing</span>
+    <nav class="theme-switcher" id="themeSwitcher" aria-label="Theme">
+      <button class="theme-dot theme-dot--terminal" data-theme-choice="terminal" aria-label="Terminal theme" type="button"></button>
+      <button class="theme-dot theme-dot--neon" data-theme-choice="neon" aria-label="Neon theme" type="button"></button>
+      <button class="theme-dot theme-dot--garden" data-theme-choice="garden" aria-label="Garden theme" type="button"></button>
+      <button class="theme-dot theme-dot--pinstripe" data-theme-choice="pinstripe" aria-label="Pinstripe theme" type="button"></button>
+    </nav>
   </header>
 
   <main id="app">
