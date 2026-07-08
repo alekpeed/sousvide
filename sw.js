@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sousvide-v1';
+const CACHE_NAME = 'sousvide-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -26,18 +26,18 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Network-first: always prefer the live deployed version when online, so a
+// new deploy shows up on next load instead of being masked by a stale cache
+// forever. Only fall back to the cache when there's no connectivity.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => cached);
-    })
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
