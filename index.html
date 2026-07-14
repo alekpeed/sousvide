@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f0d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>sousvide // precise sear &amp; sous vide timing</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="crt">
+<header>
+  <h1>&gt; sous_vide<span class="cursor">_</span></h1>
+  <p class="sub">exact water-bath time/temp + gray-band-safe sear countdown</p>
+</header>
+
+<main>
+  <section class="panel" id="form-panel">
+    <h2>01 // inputs</h2>
+
+    <div class="field">
+      <label for="meat">cut / protein</label>
+      <select id="meat"></select>
+    </div>
+
+    <div class="field">
+      <label for="doneness">target doneness</label>
+      <select id="doneness"></select>
+    </div>
+
+    <div class="field row">
+      <div>
+        <label for="thickness">thickness</label>
+        <input type="number" id="thickness" min="5" max="150" step="1" value="35">
+      </div>
+      <div class="unit-toggle">
+        <button type="button" data-unit="mm" class="unit-btn active">mm</button>
+        <button type="button" data-unit="in" class="unit-btn">in</button>
+      </div>
+    </div>
+
+    <div class="field row">
+      <div>
+        <label for="initTemp">starting temp</label>
+        <input type="number" id="initTemp" step="0.5" value="3">
+      </div>
+      <div class="unit-toggle">
+        <button type="button" data-tunit="c" class="unit-btn active">&deg;C</button>
+        <button type="button" data-tunit="f" class="unit-btn">&deg;F</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="agitation">bath circulation</label>
+      <select id="agitation">
+        <option value="120">still / low-power circulator</option>
+        <option value="200" selected>standard immersion circulator</option>
+        <option value="300">high-flow circulator</option>
+      </select>
+    </div>
+
+    <details class="advanced">
+      <summary>advanced // sear &amp; safety parameters</summary>
+
+      <div class="field">
+        <label for="panMaterial">searing surface</label>
+        <select id="panMaterial"></select>
+      </div>
+
+      <div class="field row">
+        <div>
+          <label for="grayBand">max gray-band depth</label>
+          <input type="number" id="grayBand" min="0.5" max="6" step="0.5" value="2">
+        </div>
+        <div class="unit-static">mm</div>
+      </div>
+
+      <div class="field row">
+        <div>
+          <label for="tolC">"reached" tolerance</label>
+          <input type="number" id="tolC" min="0.1" max="2" step="0.1" value="0.5">
+        </div>
+        <div class="unit-static">&deg;C from target core</div>
+      </div>
+
+      <div class="field">
+        <label for="logReduction">pathogen log-reduction target</label>
+        <select id="logReduction">
+          <option value="auto" selected>auto (USDA default for category)</option>
+          <option value="5.0">5.0-log (whole-muscle red meat/pork/fish)</option>
+          <option value="6.5">6.5-log (poultry)</option>
+          <option value="7.0">7.0-log (extra margin)</option>
+        </select>
+      </div>
+    </details>
+
+    <button id="calcBtn" class="primary">calculate &gt;&gt;</button>
+  </section>
+
+  <section class="panel" id="results-panel" hidden>
+    <h2>02 // sous vide bath</h2>
+    <div class="grid">
+      <div class="stat">
+        <span class="label">water temp</span>
+        <span class="value" id="waterTemp">--</span>
+      </div>
+      <div class="stat">
+        <span class="label">come-up to core temp</span>
+        <span class="value" id="comeUpTime">--</span>
+      </div>
+      <div class="stat">
+        <span class="label">pasteurization hold</span>
+        <span class="value" id="holdTime">--</span>
+      </div>
+      <div class="stat highlight">
+        <span class="label">minimum total bath time</span>
+        <span class="value" id="totalTime">--</span>
+      </div>
+    </div>
+    <p class="note" id="windowNote"></p>
+
+    <h2>03 // sear countdown</h2>
+    <div class="grid">
+      <div class="stat">
+        <span class="label">surface temp</span>
+        <span class="value" id="searSurfaceTemp">--</span>
+      </div>
+      <div class="stat highlight">
+        <span class="label">max time per side</span>
+        <span class="value" id="searTimePerSide">--</span>
+      </div>
+    </div>
+    <p class="note" id="searNote"></p>
+
+    <div class="timer">
+      <div class="timer-display" id="timerDisplay">00:00</div>
+      <div class="timer-side" id="timerSideLabel">side 1</div>
+      <div class="timer-controls">
+        <button id="timerStart" class="primary">start</button>
+        <button id="timerFlip" disabled>flip</button>
+        <button id="timerReset">reset</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>estimates from a 1-D transient conduction model (finite-difference), Bigelow (D/z) pasteurization kinetics, and a convective-contact conduction model for searing. not a food-safety certification &mdash; verify against USDA/FDA guidance for critical use. see README for assumptions.</p>
+</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

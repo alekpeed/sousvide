@@ -1,0 +1,13 @@
+{
+  "name": "sous_vide — precise sear & sous vide timing",
+  "short_name": "sous_vide",
+  "description": "Exact sous vide bath time/temp and gray-band-safe sear countdown.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0f0d",
+  "theme_color": "#0b0f0d",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
